@@ -17,7 +17,7 @@ df_forecast_wave = df_forecast_wave[['timestamp', 'wave_height', 'wave_height_ma
 df_forecast_wave['timestamp'] = pd.to_datetime(df_forecast_wave['timestamp'])
 df_forecast_wave.set_index('timestamp', inplace=True)
 
-# Carregando dados de movimento***********************************
+# Carregando dados de movimento**********************************
 with open(caminho_motion, 'r') as file:
     data = json.load(file)
 
