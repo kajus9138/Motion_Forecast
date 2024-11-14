@@ -2,8 +2,8 @@ import pandas as pd
 import json
 
 
-caminho_forecast_ambiental = r'C:\Users\ksilva\Documents\Motion_Forecast\dados/forecast_waves_20240127_20241031.json'
-caminho_motion = r'C:\Users\ksilva\Documents\Motion_Forecast\dados/forecast_motion_20240127_20241031.json'
+caminho_forecast_ambiental = r'C:\Users\ksilva\Documents\Motion_Forecast\dados_brutos/forecast_waves_20240127_20241031.json'
+caminho_motion = r'C:\Users\ksilva\Documents\Motion_Forecast\dados_brutos/forecast_motion_20240127_20241031.json'
 
 # Carregando dados ambientais***********************************
 with open(caminho_forecast_ambiental, 'r') as file:
@@ -31,7 +31,7 @@ df_motion_3h = df_motion.resample('3H').median()
 
 df_motion_3h.index.name = 'timestamp'
 df_total = pd.merge(df_motion_3h, df_forecast_wave, left_index=True, right_index=True, how='inner')
-df_total.drop(['wave_height', 'wave_height_max', 'peak_period'], inplace=True, axis=1)
+#df_total.drop(['wave_height', 'wave_height_max', 'peak_period'], inplace=True, axis=1)
 
 df_total.to_csv('df_envmotion.csv')
 
