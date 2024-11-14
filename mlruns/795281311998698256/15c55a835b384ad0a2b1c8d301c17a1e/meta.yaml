@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/ksilva/Documents/motion_forecast/mlruns/795281311998698256/15c55a835b384ad0a2b1c8d301c17a1e/artifacts
+end_time: 1731612753470
+entry_point_name: ''
+experiment_id: '795281311998698256'
+lifecycle_stage: active
+run_id: 15c55a835b384ad0a2b1c8d301c17a1e
+run_name: efficient-cod-11
+run_uuid: 15c55a835b384ad0a2b1c8d301c17a1e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731612722367
+status: 3
+tags: []
+user_id: ksilva

@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/ksilva/Documents/motion_forecast/mlruns/795281311998698256/2feb2ee0474c448e8612b9bbb2ddbfdd/artifacts
+end_time: 1731614998806
+entry_point_name: ''
+experiment_id: '795281311998698256'
+lifecycle_stage: active
+run_id: 2feb2ee0474c448e8612b9bbb2ddbfdd
+run_name: popular-toad-847
+run_uuid: 2feb2ee0474c448e8612b9bbb2ddbfdd
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731614985133
+status: 3
+tags: []
+user_id: ksilva

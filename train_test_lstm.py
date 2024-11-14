@@ -5,7 +5,12 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Reshape
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import yaml
+import mlflow
+import mlflow.keras
 
+mlflow.set_experiment('LSTM_Motion_01')
+
+# Função para criar sequências (já existente)
 def create_sequences_2(data, timestamps, n_steps, extra_features):
     X, y = [], []
    
@@ -15,7 +20,7 @@ def create_sequences_2(data, timestamps, n_steps, extra_features):
         time_diff = (next_time - current_time).total_seconds() / 3600  # em horas
 
         if time_diff > 3:
-            continue # caso a diferença entre as linhas consecutivas for maior que 3h a sequencia é pulada
+            continue  # caso a diferença entre as linhas consecutivas for maior que 3h a sequencia é pulada
 
         X_seq = data[i:i + n_steps]
         y_seq = data[i + n_steps:i + 2 * n_steps, :3]
@@ -26,17 +31,15 @@ def create_sequences_2(data, timestamps, n_steps, extra_features):
 
     return np.array(X), np.array(y)
 
-
 # Carregamento dos dados****************************************
 with open("config.yml", 'r') as ymlfile:
     config = yaml.safe_load(ymlfile)
 
-df_total = pd.read_csv(config['caminho_dataset'])
+df_total = pd.read_csv(config['dataset_path'])
 df_total.set_index('timestamp', inplace=True)
 df_total.dropna(inplace=True)
 
 # Processamento para treinamento********************************
-
 scaler = MinMaxScaler()
 scaled_data = scaler.fit_transform(df_total[['heave', 'roll', 'pitch', 'wave_height', 'wave_height_max',
                                              'peak_period', 'wave_height_swell', 'wave_height_sea',
@@ -58,12 +61,43 @@ X_features_test = scaled_data[fim:, :]
 extra_features_test = scaled_data[fim + 1:, 3:]  
 X_test, y_test = create_sequences_2(X_features_test, timestamps_test, n_steps, extra_features_test)
 
-model = Sequential()
-model.add(LSTM(50, activation='relu', input_shape=(n_steps, X_train.shape[2])))  # Todas as 12 variáveis são usadas como entrada
-model.add(Dense(4 * 3))  # Ajuste a camada de saída para prever apenas as 3 variáveis-alvo em 4 passos de tempo
-model.add(Reshape((4, 3)))  # Redimensione a saída para (4, 3), ou seja, 4 passos de tempo para 3 variáveis
-model.compile(optimizer='adam', loss='mse')
+# Início do rastreamento com MLflow
+with mlflow.start_run():
 
-model.fit(X_train, y_train[:, :,], epochs=30, batch_size=3, verbose=1)
+    # Definindo parâmetros a serem rastreados
+    mlflow.log_param("dataset_path", config['dataset_path'])
+    mlflow.log_param("n_steps", config['n_steps'])
+    mlflow.log_param("fim", config['fim'])
+    mlflow.log_param("epochs", config['epochs'])
+    mlflow.log_param("batch_size", config['batch_size'])
+    mlflow.log_param("units", config['units'])
+    mlflow.log_param("recurrent_activation", config["recurrent_activation"])
+    mlflow.log_param("activation", config["activation"])
+    mlflow.log_param("optimizer", config['optimizer'])
+    
 
-print("modelo treinado")
+    # Definindo o modelo
+    model = Sequential()
+    model.add(LSTM(units=config['units'], activation=config["activation"], input_shape=(config['n_steps'], X_train.shape[2])))  
+    model.add(Dense(4 * 3))  
+    model.add(Reshape((4, 3)))  
+    model.compile(optimizer=config['optimizer'], loss='mse')
+
+    # Treinando o modelo
+    model.fit(X_train, y_train[:, :,], epochs=config["epochs"], batch_size=config["batch_size"], verbose=1)
+
+    # Logando o modelo no MLflow
+    mlflow.keras.log_model(model, "model")
+
+    # Calculando e logando as métricas
+    y_pred = model.predict(X_test)
+    mse = mean_squared_error(y_test.reshape(-1, 3), y_pred.reshape(-1, 3))
+    mae = mean_absolute_error(y_test.reshape(-1, 3), y_pred.reshape(-1, 3))
+
+    mlflow.log_metric("MSE", mse)
+    mlflow.log_metric("MAE", mae)
+
+    print("Modelo treinado e rastreado no MLflow")
+    print(f"MSE: {mse}")
+    print(f"MAE: {mae}")
+

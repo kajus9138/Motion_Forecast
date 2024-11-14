@@ -1,2 +1,11 @@
-caminho_dataset: c:\Users\ksilva\Documents\Motion_Forecast/df_envmotion.csv
-#dataset_path: c:\Users\ksilva\Documents\Wave_Estimator\Smooth\ATL/dataset_smh_01.csv
+dataset_path: c:\Users\ksilva\Documents\Motion_Forecast/df_envmotion.csv
+
+n_steps: 4
+epochs: 10
+batch_size: 3
+units: 50 # número de neurônios
+fim: 3 # separação para teste
+recurrent_activation: "sigmoid"
+activation: "relu"
+optimizer: "adam"
+

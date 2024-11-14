@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/ksilva/Documents/motion_forecast/mlruns/795281311998698256/4b0e057996b84a9c939e68fbdae67676/artifacts
+end_time: 1731614850302
+entry_point_name: ''
+experiment_id: '795281311998698256'
+lifecycle_stage: active
+run_id: 4b0e057996b84a9c939e68fbdae67676
+run_name: thundering-ray-880
+run_uuid: 4b0e057996b84a9c939e68fbdae67676
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731614843292
+status: 4
+tags: []
+user_id: ksilva

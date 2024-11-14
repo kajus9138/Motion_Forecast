@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/ksilva/Documents/motion_forecast/mlruns/795281311998698256/09cab1d87c3b4edb99b1501b27b0643c/artifacts
+end_time: 1731614906006
+entry_point_name: ''
+experiment_id: '795281311998698256'
+lifecycle_stage: active
+run_id: 09cab1d87c3b4edb99b1501b27b0643c
+run_name: monumental-hare-0
+run_uuid: 09cab1d87c3b4edb99b1501b27b0643c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731614892162
+status: 3
+tags: []
+user_id: ksilva
